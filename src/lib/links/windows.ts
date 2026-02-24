@@ -43,14 +43,16 @@ function handleError(error: string, logger: Logger): void {
 }
 
 function linkModInternal(modName: string, modDir: string, godotDir: string, logger: Logger): void {
-    const linkPath = path.join(godotDir, modName)
-    checkDestSafety(modDir, linkPath, ["modDir", "modName", "godotDir"])
+    const resolvedModDir = path.resolve(modDir)
+    const resolvedGodotDir = path.resolve(godotDir)
+    const linkPath = path.join(resolvedGodotDir, modName)
+    checkDestSafety(resolvedModDir, linkPath, ["modDir", "modName", "godotDir"])
     const { exists } = checkSymlinkExists(linkPath)
     if (exists) {
         logger.error(`Symlink already exists: ${linkPath}`)
         return
     }
-    const targetPath = modDir
+    const targetPath = resolvedModDir
     const result = createSymlink(linkPath, targetPath, logger)
     if (!result.success && result.error) {
         handleError(result.error, logger)

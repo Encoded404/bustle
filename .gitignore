@@ -4,3 +4,4 @@ node_modules
 test-mod/build
 .pkg
 BustleTestMod.zip
+pnpm-lock.yaml
